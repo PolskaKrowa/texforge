@@ -1,6 +1,6 @@
 [package]
 name = "texforge"
-version = "0.1.0"
+version = "0.1.1"
 description = "TexForge — a LaTeX editor with live preview, Beamer slide management and templates"
 authors = ["TexForge contributors"]
 license = "MIT"

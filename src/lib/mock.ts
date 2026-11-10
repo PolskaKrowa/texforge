@@ -171,7 +171,7 @@ export const mockApi: TexForgeApi = {
   },
 
   async getAppInfo(): Promise<AppInfo> {
-    return { name: "TexForge", version: "0.1.0 — web dev mode" };
+    return { name: "TexForge", version: "0.1.1 — web dev mode" };
   },
 
   async getRecents(): Promise<RecentFile[]> {
