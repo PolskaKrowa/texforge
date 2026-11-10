@@ -145,7 +145,12 @@ export const mockApi: TexForgeApi = {
   async writePdfFromB64(path: string, b64: string): Promise<void> {
     if (path.startsWith("__download__:")) {
       const name = path.slice("__download__:".length);
-      const blob = new Blob([b64ToBytes(b64)], { type: "application/pdf" });
+      const bytes = b64ToBytes(b64);
+      const buffer = new ArrayBuffer(bytes.byteLength);
+      new Uint8Array(buffer).set(bytes);
+      const blob = new Blob([buffer], {
+        type: "application/pdf",
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
