@@ -1,0 +1,39 @@
+{
+  "name": "texforge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "TexForge — a LaTeX editor with live preview, Beamer slide management and templates",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "build:win": "tauri build --bundles nsis",
+    "build:linux": "tauri build --bundles deb,appimage",
+    "icon": "tauri icon src-tauri/icons/icon.png"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.18.0",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/legacy-modes": "^6.5.0",
+    "@codemirror/search": "^6.5.0",
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/view": "^6.38.0",
+    "@lezer/highlight": "^1.2.0",
+    "@tauri-apps/api": "^2.9.0",
+    "pdfjs-dist": "^6.2.108",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "~5.6.3",
+    "vite": "^6.3.5"
+  }
+}
