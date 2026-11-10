@@ -98,15 +98,22 @@ npm run tauri build   # platform defaults
 
 Artifacts land in `src-tauri/target/release/bundle/`.
 
-### CI releases
+### Continuous integration and releases
 
-`.github/workflows/release.yml` builds Windows and Linux installers on
-every `v*` tag and attaches them to a draft GitHub release (uses
-[tauri-action](https://github.com/tauri-apps/tauri-action)).
+The GitHub Actions workflows in `.github/workflows/` provide:
 
-```bash
-git tag v0.1.0 && git push origin v0.1.0
-```
+- **CI** — builds the frontend and checks Rust formatting and compilation on
+  pushes and pull requests.
+- **Release builds** — when a GitHub Release is published, builds and attaches
+  Windows x64 (NSIS), macOS Intel + Apple Silicon (DMG), and Linux x64 (DEB +
+  AppImage) installers to that same release using
+  [tauri-action](https://github.com/tauri-apps/tauri-action).
+
+The macOS workflow uses ad-hoc signing because Apple Developer signing and
+notarisation credentials are not included. macOS may therefore ask users to
+approve the app in **System Settings → Privacy & Security** before opening it.
+
+Dependabot also checks npm, Cargo, and GitHub Actions dependencies weekly.
 
 ## Keyboard shortcuts
 
