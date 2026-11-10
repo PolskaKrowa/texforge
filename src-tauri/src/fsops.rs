@@ -33,8 +33,7 @@ pub(crate) fn data_dir(app: &AppHandle) -> Result<PathBuf, String> {
 
 #[tauri::command]
 pub fn read_text_file(path: String) -> Result<String, String> {
-    let bytes =
-        std::fs::read(&path).map_err(|e| format!("Could not read '{path}': {e}"))?;
+    let bytes = std::fs::read(&path).map_err(|e| format!("Could not read '{path}': {e}"))?;
     Ok(String::from_utf8_lossy(&bytes).into_owned())
 }
 
@@ -70,7 +69,10 @@ pub fn show_in_folder(path: String) -> Result<(), String> {
         .arg(target.parent().unwrap_or(Path::new(".")))
         .spawn();
     #[cfg(target_os = "macos")]
-    let result = std::process::Command::new("open").arg("-R").arg(&target).spawn();
+    let result = std::process::Command::new("open")
+        .arg("-R")
+        .arg(&target)
+        .spawn();
     result
         .map(|_| ())
         .map_err(|e| format!("Could not open the file manager: {e}"))

@@ -68,7 +68,11 @@ pub fn save_user_template(
         id: uuid::Uuid::new_v4().to_string(),
         name,
         description: description.trim().to_string(),
-        kind: if kind.is_empty() { "basic".into() } else { kind },
+        kind: if kind.is_empty() {
+            "basic".into()
+        } else {
+            kind
+        },
         created_at: now_secs(),
         content,
     };
@@ -93,8 +97,7 @@ pub fn delete_user_template(app: AppHandle, id: String) -> Result<bool, String> 
     let dir = templates_dir(&app)?;
     let file = dir.join(format!("{id}.json"));
     if file.exists() {
-        std::fs::remove_file(&file)
-            .map_err(|e| format!("Could not delete the template: {e}"))?;
+        std::fs::remove_file(&file).map_err(|e| format!("Could not delete the template: {e}"))?;
         Ok(true)
     } else {
         Ok(false)

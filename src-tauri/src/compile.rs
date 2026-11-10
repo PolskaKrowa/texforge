@@ -77,7 +77,12 @@ pub async fn compile_latex(
     custom_path: Option<String>,
 ) -> Result<CompileResult, String> {
     let handle = tauri::async_runtime::spawn_blocking(move || {
-        compile_blocking(&source, path.as_deref(), engine.as_deref(), custom_path.as_deref())
+        compile_blocking(
+            &source,
+            path.as_deref(),
+            engine.as_deref(),
+            custom_path.as_deref(),
+        )
     });
     let inner = handle
         .await
@@ -85,12 +90,12 @@ pub async fn compile_latex(
     inner
 }
 
-fn resolve_engine(engine: Option<&str>, custom_path: Option<&str>) -> Result<(String, bool), String> {
+fn resolve_engine(
+    engine: Option<&str>,
+    custom_path: Option<&str>,
+) -> Result<(String, bool), String> {
     // An explicitly configured custom engine binary wins.
-    if let Some(cp) = custom_path
-        .map(str::trim)
-        .filter(|p| !p.is_empty())
-    {
+    if let Some(cp) = custom_path.map(str::trim).filter(|p| !p.is_empty()) {
         let p = PathBuf::from(cp);
         if !p.is_file() {
             return Err("CUSTOM_ENGINE_NOT_FOUND".into());
@@ -294,8 +299,10 @@ fn re_lpoint() -> &'static Regex {
 fn re_warning() -> &'static Regex {
     static RE: OnceLock<Regex> = OnceLock::new();
     RE.get_or_init(|| {
-        Regex::new(r"^((?:LaTeX|pdfTeX|LuaTeX|XeTeX|Package|Class|Font)[\w ()-]*[Ww]arning):\s*(.*)$")
-            .expect("static regex must compile")
+        Regex::new(
+            r"^((?:LaTeX|pdfTeX|LuaTeX|XeTeX|Package|Class|Font)[\w ()-]*[Ww]arning):\s*(.*)$",
+        )
+        .expect("static regex must compile")
     })
 }
 
@@ -400,12 +407,7 @@ pub fn parse_log(log: &str) -> Vec<Issue> {
                 .and_then(|m| m.as_str().parse::<u32>().ok());
             // regex >= 1.11: indexing a Captures yields &str directly
             // (note: the Index place is unsized `str`, so borrow it for format!).
-            let message = format!(
-                "{} \\{}box ({})",
-                &caps[1],
-                &caps[2],
-                &caps[3]
-            );
+            let message = format!("{} \\{}box ({})", &caps[1], &caps[2], &caps[3]);
             push(
                 Issue {
                     severity: "badbox".into(),
