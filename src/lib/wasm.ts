@@ -60,7 +60,7 @@ class WasmLatexEngine {
           // Point the engine at our offline texlive snapshot (same origin).
           worker.postMessage({
             cmd: "settexliveurl",
-            url: baseUrl() + TEXLIVE_ENDPOINT,
+            url: new URL(baseUrl() + TEXLIVE_ENDPOINT, window.location.href).href,
           });
           resolve();
         }
