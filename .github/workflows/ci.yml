@@ -60,4 +60,4 @@ jobs:
         run: cargo fmt --manifest-path src-tauri/Cargo.toml --all -- --check
 
       - name: Check Rust code
-        run: cargo check --manifest-path src-tauri/Cargo.toml --locked
+        run: cargo check --manifest-path src-tauri/Cargo.toml
