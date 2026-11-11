@@ -19,6 +19,19 @@ LOCAL PATCH (one line, both engine .js files)
   requested file name when the header is absent:
       getResponseHeader("fileid")  ->  getResponseHeader("fileid")||reqname
 
+LOCAL PATCH 2 (both engine .js files)
+  A packaged Tauri app serves every path it does not know as index.html
+  with HTTP status 200 (single-page-app fallback), instead of a 404. The
+  original glue treats any status 200 as "file found", so a missing
+  optional file (main.aux, hyperref.cfg, *.vf, *.dfu, ...) was written to
+  the engine's file cache as HTML and then read by TeX, which failed with
+  "! LaTeX Error: Missing \begin{document}." (seen in the Windows build;
+  `tauri dev` / vite return real 404s and were unaffected). The patch adds
+  texliveIsHtml() and only accepts a 200 response whose body is not an HTML
+  document (kpse_find_file_impl in both engines, kpse_find_pk_impl in
+  pdfTeX); an HTML body is handled like a 404:
+      if(xhr.status===200){...}  ->  if(xhr.status===200&&!texliveIsHtml(xhr.response)){...}
+
 texlive/ — OFFLINE SNAPSHOT (curated, ~256 files)
   SwiftLaTeX's engine fetches its format file, packages and fonts at run
   time from https://texlive2.swiftlatex.com/, which has been offline for
