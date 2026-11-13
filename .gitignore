@@ -15,3 +15,5 @@ Thumbs.db
 
 # Local env
 *.local
+
+package-lock.json
